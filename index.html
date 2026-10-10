@@ -118,6 +118,110 @@
       color: #ffffff;
     }
 
+    /* -------------------------------------------------------------
+       Sunflower Background Audio Pill Button
+    ------------------------------------------------------------- */
+    .nav-music-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      background: rgba(7, 7, 11, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      cursor: pointer;
+      pointer-events: auto;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      font-family: var(--font-body);
+      user-select: none;
+    }
+
+    .nav-music-btn:hover {
+      background: rgba(18, 22, 38, 0.75);
+      border-color: rgba(0, 242, 254, 0.4);
+      box-shadow: 0 0 16px rgba(0, 242, 254, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .nav-music-btn.playing {
+      border-color: rgba(255, 170, 0, 0.55);
+      box-shadow: 0 0 20px rgba(255, 170, 0, 0.25);
+      background: rgba(25, 20, 10, 0.6);
+    }
+
+    .music-icon {
+      font-size: 0.72rem;
+      color: var(--primary-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(0, 242, 254, 0.12);
+      transition: all 0.25s ease;
+    }
+
+    .nav-music-btn.playing .music-icon {
+      color: var(--gold-accent);
+      background: rgba(255, 170, 0, 0.18);
+    }
+
+    .music-info {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      line-height: 1.15;
+    }
+
+    .music-label {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+
+    .music-sub {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      color: var(--text-muted);
+    }
+
+    .music-waves {
+      display: flex;
+      align-items: flex-end;
+      gap: 2.5px;
+      height: 14px;
+      margin-left: 2px;
+    }
+
+    .wave-bar {
+      width: 2.5px;
+      height: 4px;
+      background: var(--text-dim);
+      border-radius: 2px;
+      transition: height 0.2s ease, background 0.2s ease;
+    }
+
+    .nav-music-btn.playing .wave-bar {
+      background: var(--gold-accent);
+      animation: musicWave 1.1s ease-in-out infinite alternate;
+    }
+
+    .nav-music-btn.playing .wave-bar:nth-child(1) { animation-delay: 0.0s; height: 10px; }
+    .nav-music-btn.playing .wave-bar:nth-child(2) { animation-delay: 0.25s; height: 14px; }
+    .nav-music-btn.playing .wave-bar:nth-child(3) { animation-delay: 0.12s; height: 7px; }
+    .nav-music-btn.playing .wave-bar:nth-child(4) { animation-delay: 0.35s; height: 12px; }
+
+    @keyframes musicWave {
+      0% { height: 3px; }
+      100% { height: 14px; }
+    }
+
 
 
     /* -------------------------------------------------------------
@@ -708,15 +812,32 @@
 </head>
 <body class="loading">
 
+  <!-- Background Music Audio (Sunflower - Post Malone) -->
+  <audio id="bg-audio" src="sunflower.mp3" loop preload="auto"></audio>
+
   <!-- Ambient Blueprint Grid -->
   <div class="blueprint-grid"></div>
 
-  <!-- Ultra-Minimal, Transparent Header -->
+  <!-- Ultra-Minimal, Transparent Header with Brand & Sunflower Music Toggle -->
   <header class="navbar" id="main-nav">
     <a href="#" class="nav-brand">
       <span class="brand-spider">🕷️</span>
       <span class="brand-name">Meer Mohammed Shoaib</span>
     </a>
+
+    <button id="music-toggle" class="nav-music-btn" aria-label="Toggle Sunflower background music" title="Play / Pause Sunflower">
+      <span class="music-icon" id="music-icon">▶</span>
+      <span class="music-info">
+        <span class="music-label">Sunflower</span>
+        <span class="music-sub">Post Malone</span>
+      </span>
+      <span class="music-waves" aria-hidden="true">
+        <span class="wave-bar"></span>
+        <span class="wave-bar"></span>
+        <span class="wave-bar"></span>
+        <span class="wave-bar"></span>
+      </span>
+    </button>
   </header>
 
   <!-- Preloader Screen (Circular SVG Progress & Asset Caching) -->
@@ -1228,6 +1349,51 @@
         });
       });
     }
+
+    // -------------------------------------------------------------
+    // Sunflower Audio Controller (Music On/Off)
+    // -------------------------------------------------------------
+    const bgAudio = document.getElementById("bg-audio");
+    const musicBtn = document.getElementById("music-toggle");
+    const musicIcon = document.getElementById("music-icon");
+    let isMusicPlaying = false;
+
+    function toggleMusic(forcePlay = null) {
+      if (!bgAudio) return;
+      const shouldPlay = forcePlay !== null ? forcePlay : !isMusicPlaying;
+
+      if (shouldPlay) {
+        bgAudio.volume = 0.55;
+        bgAudio.play().then(() => {
+          isMusicPlaying = true;
+          if (musicBtn) musicBtn.classList.add("playing");
+          if (musicIcon) musicIcon.textContent = "❚❚";
+        }).catch(err => {
+          console.log("Audio playback notice:", err);
+        });
+      } else {
+        bgAudio.pause();
+        isMusicPlaying = false;
+        if (musicBtn) musicBtn.classList.remove("playing");
+        if (musicIcon) musicIcon.textContent = "▶";
+      }
+    }
+
+    if (musicBtn) {
+      musicBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleMusic();
+      });
+    }
+
+    // Seamlessly start music when user initiates dive if not already playing
+    const originalScrollDownToDive = scrollDownToDive;
+    scrollDownToDive = function() {
+      if (!isMusicPlaying) {
+        toggleMusic(true);
+      }
+      originalScrollDownToDive();
+    };
 
     // -------------------------------------------------------------
     // Entry Point Execution
