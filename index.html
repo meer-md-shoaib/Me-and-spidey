@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meer Mohammed Shoaib — Portfolio & Interactive Motion</title>
+  <meta name="description" content="Portfolio of Meer Mohammed Shoaib — Developer, Builder, Cybersecurity & AI Explorer. Interactive GSAP 4K scroll sequence inspired by Spider-Man and Peter Parker's ethos.">
+  
+  <!-- Modern Typography Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    /* -------------------------------------------------------------
+       Design Tokens & Theme Variables
+    ------------------------------------------------------------- */
+    :root {
+      --primary-accent: #00f2fe;        /* Spider-Verse Cyan */
+      --secondary-accent: #ff2a5f;      /* Miles / Peter Crimson */
+      --gold-accent: #ffaa00;           /* Sunset Golden Glow */
+      --purple-accent: #b300ff;         /* Multiverse Violet */
+      --bg-dark: #07070b;
+      --bg-card: rgba(10, 12, 22, 0.78);
+      --border-subtle: rgba(255, 255, 255, 0.1);
+      --text-main: #ffffff;
+      --text-muted: #9aa5b8;
+      --text-dim: #5d6778;
+      
+      --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Space Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      overscroll-behavior: none;
+    }
+
+    ::selection {
+      background: var(--primary-accent);
+      color: #000;
+    }
+
+    body.loading {
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    /* Ambient Blueprint Atmosphere */
+    .blueprint-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* -------------------------------------------------------------
+       Ultra-Minimal & Transparent Floating Header
+    ------------------------------------------------------------- */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 52px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 28px;
+      background: transparent;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      pointer-events: auto;
+      padding: 6px 14px;
+      border-radius: 100px;
+      background: rgba(7, 7, 11, 0.35);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .brand-spider {
+      font-size: 1.1rem;
+      filter: drop-shadow(0 0 8px rgba(255, 42, 95, 0.7));
+    }
+
+    .brand-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.92rem;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+
+
+    /* -------------------------------------------------------------
+       Preloader Overlay (SVG Ring + Smooth Metric)
+    ------------------------------------------------------------- */
+    .loader-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #0e101a 0%, #050508 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+    }
+
+    .loader-box {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      max-width: 340px;
+    }
+
+    .loader-ring-wrapper {
+      position: relative;
+      width: 110px;
+      height: 110px;
+    }
+
+    .loader-ring-svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .ring-bg {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.05);
+      stroke-width: 5;
+    }
+
+    .ring-progress {
+      fill: none;
+      stroke: url(#loaderGradient);
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-dasharray: 314;
+      stroke-dashoffset: 314;
+      transition: stroke-dashoffset 0.1s ease-out;
+    }
+
+    .ring-percent {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fff;
+      text-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
+    }
+
+    .loader-status-title {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--primary-accent);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .loader-bar-outer {
+      width: 220px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .loader-bar-inner {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--secondary-accent), var(--primary-accent));
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba(0, 242, 254, 0.8);
+      transition: width 0.1s ease-out;
+    }
+
+    .loader-notes {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      letter-spacing: 0.5px;
+      line-height: 1.4;
+    }
+
+    /* -------------------------------------------------------------
+       Pinned Animation Section (Entire Website Lives Here)
+    ------------------------------------------------------------- */
+    .animation-section {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      background-color: #000;
+      overflow: hidden;
+    }
+
+    .canvas-viewport {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+    }
+
+    #sequence-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      will-change: transform;
+    }
+
+    /* Subtle Dark Vignette for contrast */
+    .canvas-vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(5, 5, 8, 0.2) 0%, rgba(5, 5, 8, 0.65) 100%);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* -------------------------------------------------------------
+       Hero Screen (Completely Transparent, Clean Typography)
+    ------------------------------------------------------------- */
+    .hero-center-container {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 24px;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    /* Pure Transparent Wrapper */
+    .hero-card-scrim {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 860px;
+      padding: 20px;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+    }
+
+    .hero-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 18px;
+      border-radius: 100px;
+      background: rgba(7, 7, 11, 0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: #94a3b8;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    .hero-badge-pill span.highlight {
+      color: var(--primary-accent);
+      font-weight: 700;
+    }
+
+    .hero-primary-name {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 5.8vw, 4.8rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.5px;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin-bottom: 20px;
+      text-shadow: 0 4px 30px rgba(0, 0, 0, 0.95), 0 0 40px rgba(0, 242, 254, 0.4);
+    }
+
+    .hero-primary-name .accent-shimmer {
+      background: linear-gradient(135deg, #ffffff 30%, var(--primary-accent) 70%, var(--secondary-accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-body);
+      font-size: clamp(1rem, 1.6vw, 1.2rem);
+      font-weight: 400;
+      color: #f1f5f9;
+      max-width: 660px;
+      line-height: 1.65;
+      margin-bottom: 32px;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95);
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      pointer-events: auto;
+    }
+
+    .hero-btn-primary {
+      padding: 14px 34px;
+      border-radius: 100px;
+      background: linear-gradient(135deg, var(--primary-accent), #0099ff);
+      color: #040810;
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      box-shadow: 0 0 25px rgba(0, 242, 254, 0.5);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .hero-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 45px rgba(0, 242, 254, 0.8);
+    }
+
+    /* -------------------------------------------------------------
+       Floating Narrative HUD Story Cards (All Inside the Frames)
+    ------------------------------------------------------------- */
+    .story-layers {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 15;
+    }
+
+    .story-hud-card {
+      position: absolute;
+      width: min(440px, calc(100vw - 44px));
+      background: var(--bg-card);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 22px;
+      padding: 30px 32px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 0, 0, 0.6);
+      pointer-events: auto;
+      overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(40px);
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .story-hud-card:hover {
+      border-color: rgba(0, 242, 254, 0.45);
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0, 242, 254, 0.2);
+    }
+
+    /* Interactive mouse spotlight */
+    .card-spotlight {
+      position: absolute;
+      inset: 0;
+      border-radius: 22px;
+      background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 242, 254, 0.15) 0%, transparent 65%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .story-hud-card:hover .card-spotlight {
+      opacity: 1;
+    }
+
+    .story-header-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--primary-accent);
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .story-card-title {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+
+    .story-card-desc {
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      line-height: 1.65;
+      margin-bottom: 20px;
+    }
+
+    .story-tags-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .story-tag-item {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    /* Story Card Placements */
+    #story-card-1 {
+      bottom: 40px;
+      right: 45px;
+    }
+
+    #story-card-2 {
+      top: 80px;
+      left: 45px;
+    }
+
+    #story-card-3 {
+      bottom: 40px;
+      left: 45px;
+    }
+
+    #story-card-4 {
+      top: 80px;
+      right: 45px;
+    }
+
+    #story-card-5 {
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%) translateY(40px);
+      width: min(580px, calc(100vw - 44px));
+      text-align: center;
+      border-color: rgba(255, 170, 0, 0.4);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85), 0 0 50px rgba(255, 170, 0, 0.2);
+    }
+
+    #story-card-5 .story-header-pill {
+      color: var(--gold-accent);
+      background: rgba(255, 170, 0, 0.12);
+      border-color: rgba(255, 170, 0, 0.35);
+    }
+
+    #story-card-5 .story-tags-group {
+      justify-content: center;
+    }
+
+    /* -------------------------------------------------------------
+       GRAND FINALE CARD (Climax inside the final sunset frames)
+    ------------------------------------------------------------- */
+    #story-finale {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.92);
+      width: min(640px, calc(100vw - 40px));
+      background: rgba(10, 11, 20, 0.85);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      border-radius: 26px;
+      padding: 42px 38px;
+      text-align: center;
+      box-shadow: 0 35px 90px rgba(0, 0, 0, 0.95), 0 0 60px rgba(0, 242, 254, 0.25);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: auto;
+      z-index: 25;
+    }
+
+    .finale-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--primary-accent);
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      padding: 5px 16px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .finale-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.8vw, 2.8rem);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .finale-byline {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .finale-byline .name-glow {
+      color: #fff;
+      font-weight: 700;
+      text-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
+    }
+
+    .finale-quote {
+      font-size: 0.95rem;
+      color: #e2e8f0;
+      line-height: 1.6;
+      max-width: 520px;
+      margin: 0 auto 30px auto;
+      font-style: italic;
+    }
+
+    .finale-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .magnetic-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .magnetic-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 28px;
+      border-radius: 100px;
+      font-family: var(--font-display);
+      font-size: 0.92rem;
+      font-weight: 700;
+      text-decoration: none;
+      color: #fff;
+      background: rgba(14, 15, 24, 0.85);
+      border: 1px solid var(--border-subtle);
+      backdrop-filter: blur(20px);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .magnetic-link.btn-linkedin:hover {
+      border-color: var(--primary-accent);
+      color: var(--primary-accent);
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.4);
+    }
+
+    .magnetic-link.btn-github:hover {
+      border-color: var(--purple-accent);
+      color: #df97ff;
+      box-shadow: 0 0 30px rgba(179, 0, 255, 0.4);
+    }
+
+    .btn-replay {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #94a3b8;
+      cursor: pointer;
+    }
+
+    .btn-replay:hover {
+      border-color: var(--gold-accent);
+      color: var(--gold-accent);
+      box-shadow: 0 0 25px rgba(255, 170, 0, 0.3);
+    }
+
+    .social-svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    .finale-footer-copy {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+    }
+
+    /* -------------------------------------------------------------
+       Responsive Adjustments
+    ------------------------------------------------------------- */
+    @media (max-width: 991px) {
+      .navbar {
+        padding: 0 18px;
+      }
+      .hero-primary-name {
+        font-size: 3.2rem;
+      }
+      #story-card-1, #story-card-3 {
+        right: 20px;
+        bottom: 20px;
+      }
+      #story-card-2, #story-card-4 {
+        left: 20px;
+        top: 65px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .navbar {
+        padding: 0 14px;
+      }
+      .hero-primary-name {
+        font-size: 2.3rem;
+      }
+      .hero-subtitle {
+        font-size: 0.95rem;
+      }
+      .story-hud-card {
+        padding: 20px 22px;
+        border-radius: 18px;
+        left: 14px !important;
+        right: 14px !important;
+        width: auto !important;
+        transform: translateY(30px) !important;
+      }
+      #story-card-1, #story-card-3, #story-card-5 {
+        bottom: 16px !important;
+      }
+      #story-card-2, #story-card-4 {
+        top: 65px !important;
+      }
+      .story-card-title {
+        font-size: 1.25rem;
+      }
+      .story-card-desc {
+        font-size: 0.85rem;
+      }
+      #story-finale {
+        padding: 28px 20px;
+        border-radius: 20px;
+      }
+      .finale-buttons {
+        flex-direction: column;
+      }
+      .magnetic-link {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+</body>
+</html>
