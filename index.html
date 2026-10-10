@@ -706,7 +706,559 @@
     }
   </style>
 </head>
-<body>
-  <div id="root"></div>
+<body class="loading">
+
+  <!-- Ambient Blueprint Grid -->
+  <div class="blueprint-grid"></div>
+
+  <!-- Ultra-Minimal, Transparent Header -->
+  <header class="navbar" id="main-nav">
+    <a href="#" class="nav-brand">
+      <span class="brand-spider">🕷️</span>
+      <span class="brand-name">Meer Mohammed Shoaib</span>
+    </a>
+  </header>
+
+  <!-- Preloader Screen (Circular SVG Progress & Asset Caching) -->
+  <div class="loader-overlay" id="loader">
+    <div class="loader-box">
+      <div class="loader-ring-wrapper">
+        <svg class="loader-ring-svg" viewBox="0 0 110 110">
+          <defs>
+            <linearGradient id="loaderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="var(--secondary-accent)" />
+              <stop offset="50%" stop-color="var(--primary-accent)" />
+              <stop offset="100%" stop-color="var(--gold-accent)" />
+            </linearGradient>
+          </defs>
+          <circle class="ring-bg" cx="55" cy="55" r="50"></circle>
+          <circle class="ring-progress" cx="55" cy="55" r="50" id="loaderCircle"></circle>
+        </svg>
+        <div class="ring-percent" id="loaderPercent">0%</div>
+      </div>
+      
+      <div class="loader-status-title" id="loaderStatus">Initializing Sequence...</div>
+      
+      <div class="loader-bar-outer">
+        <div class="loader-bar-inner" id="loaderBar"></div>
+      </div>
+      
+      <p class="loader-notes">Buffering 264 frames for hardware-accelerated playback</p>
+    </div>
+  </div>
+
+  <!-- Pinned Animation Canvas Section (The Whole Site Lives Here) -->
+  <section class="animation-section" id="animation-section">
+    
+    <!-- High-DPI Canvas Rendering Surface -->
+    <div class="canvas-viewport">
+      <canvas id="sequence-canvas"></canvas>
+    </div>
+
+    <!-- Cinematic Vignette for Legibility -->
+    <div class="canvas-vignette"></div>
+
+    <!-- Center Hero Landing Screen (Completely Transparent Box) -->
+    <div class="hero-center-container" id="hero-overlay">
+      <div class="hero-card-scrim">
+        <div class="hero-badge-pill">
+          <span>PORTFOLIO</span>
+          <span>//</span>
+          <span class="highlight">BUILDER & CREATIVE TECH</span>
+        </div>
+        
+        <h1 class="hero-primary-name">
+          <span class="accent-shimmer">Meer Mohammed Shoaib</span>
+        </h1>
+        
+        <p class="hero-subtitle">
+          Curiosity, code, and relentless iteration. Inspired by Peter Parker's ethos — turning ideas into reality across Cybersecurity, AI, and immersive interactive web systems.
+        </p>
+
+        <div class="hero-actions">
+          <button class="hero-btn-primary" onclick="scrollDownToDive()">DIVE INTO THE SEQUENCE 🕷️</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating Narrative HUD Story Cards (Peter Parker Connection) -->
+    <div class="story-layers">
+      
+      <!-- Card 1: The Builder Mindset -->
+      <div class="story-hud-card" id="story-card-1">
+        <div class="card-spotlight"></div>
+        <div class="story-header-pill">01 // THE BUILDER MINDSET</div>
+        <h3 class="story-card-title">A Builder, Not Just a Dreamer</h3>
+        <p class="story-card-desc">
+          Like Peter in his workshop, I turn raw curiosity into working code. Peter doesn't just study science — he experiments, modifies inventions, and brings solutions to life. From ELI5 and NetSentry to DevKit, the thrill is engineering from the ground up.
+        </p>
+        <div class="story-tags-group">
+          <span class="story-tag-item">ELI5 AI</span>
+          <span class="story-tag-item">NetSentry</span>
+          <span class="story-tag-item">DevKit</span>
+          <span class="story-tag-item">Hands-On Code</span>
+        </div>
+      </div>
+
+      <!-- Card 2: Curiosity Across Boundaries -->
+      <div class="story-hud-card" id="story-card-2">
+        <div class="card-spotlight"></div>
+        <div class="story-header-pill">02 // POLYMATH CURIOSITY</div>
+        <h3 class="story-card-title">Curiosity Beyond Single Fields</h3>
+        <p class="story-card-desc">
+          Peter's brilliance spans biochemistry, physics, and robotics. My curiosity bridges Cybersecurity, Artificial Intelligence, Web Systems, and Creative Technology — refusing to stay boxed into one narrow discipline.
+        </p>
+        <div class="story-tags-group">
+          <span class="story-tag-item">Cybersecurity</span>
+          <span class="story-tag-item">Neural Nets</span>
+          <span class="story-tag-item">Full-Stack Web</span>
+          <span class="story-tag-item">Cross-Domain</span>
+        </div>
+      </div>
+
+      <!-- Card 3: Obsession with Craft -->
+      <div class="story-hud-card" id="story-card-3">
+        <div class="card-spotlight"></div>
+        <div class="story-header-pill">03 // RELENTLESS CRAFT</div>
+        <h3 class="story-card-title">Never Settle for Just "Working"</h3>
+        <p class="story-card-desc">
+          Getting basic functionality to run is only day one. Real craftsmanship is Stark-inspired glassmorphism, 4K Retina canvas scaling, and micro-interactions that spark curiosity rather than ordinary web pages.
+        </p>
+        <div class="story-tags-group">
+          <span class="story-tag-item">Stark Glassmorphism</span>
+          <span class="story-tag-item">Fluid Scrub</span>
+          <span class="story-tag-item">Retina Clarity</span>
+          <span class="story-tag-item">Micro-Interactions</span>
+        </div>
+      </div>
+
+      <!-- Card 4: Learning by Experimentation -->
+      <div class="story-hud-card" id="story-card-4">
+        <div class="card-spotlight"></div>
+        <div class="story-header-pill">04 // EMPIRICAL ITERATION</div>
+        <h3 class="story-card-title">Learning by Doing & Adapting</h3>
+        <p class="story-card-desc">
+          Peter doesn't begin knowing everything; he stumbles, re-engineers, and learns through experience. I'd rather attempt something difficult, embrace mistakes, and build evidence of potential through daily execution.
+        </p>
+        <div class="story-tags-group">
+          <span class="story-tag-item">First-Principles</span>
+          <span class="story-tag-item">Resilience</span>
+          <span class="story-tag-item">Active Learning</span>
+          <span class="story-tag-item">Humility</span>
+        </div>
+      </div>
+
+      <!-- Card 5: Core Identity / The Leap of Faith -->
+      <div class="story-hud-card" id="story-card-5">
+        <div class="card-spotlight"></div>
+        <div class="story-header-pill">05 // THE LEAP OF FAITH</div>
+        <h3 class="story-card-title">Still Becoming Who I Want to Be</h3>
+        <p class="story-card-desc" style="font-size: 1.05rem; color: #f1f5f9; font-weight: 500;">
+          "I'm not Peter Parker because I already know what I'm capable of. I relate to him because, like him, I'm still discovering it." 🕷️
+        </p>
+        <div class="story-tags-group">
+          <span class="story-tag-item">Potential in Motion</span>
+          <span class="story-tag-item">Continuous Evolution</span>
+          <span class="story-tag-item">Spider-Verse Mindset</span>
+        </div>
+      </div>
+
+      <!-- GRAND FINALE CARD: The Surprise Ending Inside the Frames -->
+      <div id="story-finale">
+        <span class="finale-badge">THE LEAP OF FAITH // COMPLETED</span>
+        <h2 class="finale-title">Let's Build Something Memorable</h2>
+        <div class="finale-byline">
+          Crafted by <span class="name-glow">Meer Mohammed Shoaib</span>
+        </div>
+        <p class="finale-quote">
+          "That's all it is, Miles. A leap of faith." — Peter B. Parker<br>
+          Every breakthrough begins before you feel ready. Take the leap, experiment relentlessly, and discover what you're capable of.
+        </p>
+
+        <div class="finale-buttons">
+          <div class="magnetic-wrap">
+            <a href="https://linkedin.com/in/MeerMohammedShoaib" target="_blank" rel="noopener noreferrer" class="magnetic-link btn-linkedin">
+              <svg class="social-svg" viewBox="0 0 24 24">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+              Connect on LinkedIn
+            </a>
+          </div>
+
+          <div class="magnetic-wrap">
+            <a href="https://github.com/meer-md-shoaib" target="_blank" rel="noopener noreferrer" class="magnetic-link btn-github">
+              <svg class="social-svg" viewBox="0 0 24 24">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+              GitHub Repositories
+            </a>
+          </div>
+
+          <div class="magnetic-wrap">
+            <button onclick="replaySequence()" class="magnetic-link btn-replay">
+              ↺ Replay Leap
+            </button>
+          </div>
+        </div>
+
+        <p class="finale-footer-copy">
+          © 2026 Meer Mohammed Shoaib • GSAP 4K Sequence Scrub Architecture
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Load GSAP Core, ScrollTrigger & ScrollToPlugin -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+
+  <script>
+    // -------------------------------------------------------------
+    // Register GSAP Plugins
+    // -------------------------------------------------------------
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+    // Canvas & Rendering Context
+    const canvas = document.getElementById("sequence-canvas");
+    const ctx = canvas.getContext("2d", { alpha: false });
+
+    // Total sequence frames count in images directory
+    const TOTAL_FRAMES = 264;
+    const images = new Array(TOTAL_FRAMES);
+    const sequenceState = { frame: 0 };
+    let lastRenderedFrame = -1;
+    let isDrawing = false;
+
+    // Build frame path: images/ezgif-frame-001.png to images/ezgif-frame-264.png
+    const formatImagePath = idx => `images/ezgif-frame-${String(idx).padStart(3, '0')}.png`;
+
+    // -------------------------------------------------------------
+    // Ultra-Smooth Canvas Rendering Engine
+    // -------------------------------------------------------------
+    function renderFrame(frameIndex) {
+      const idx = Math.min(Math.max(0, Math.round(frameIndex)), TOTAL_FRAMES - 1);
+      
+      // Critical optimization: If frame hasn't changed, skip render completely!
+      if (idx === lastRenderedFrame) return;
+
+      // Update top HUD counter
+      const hudEl = document.getElementById("hud-frame-indicator");
+      if (hudEl) {
+        hudEl.textContent = `FRAME: ${String(idx + 1).padStart(3, '0')}/${TOTAL_FRAMES}`;
+      }
+
+      // Find best available loaded image (target frame or closest loaded neighbour)
+      let img = images[idx];
+      if (!img || !img.complete || img.naturalWidth === 0) {
+        for (let offset = 1; offset < 20; offset++) {
+          if (idx - offset >= 0 && images[idx - offset] && images[idx - offset].complete) {
+            img = images[idx - offset];
+            break;
+          }
+          if (idx + offset < TOTAL_FRAMES && images[idx + offset] && images[idx + offset].complete) {
+            img = images[idx + offset];
+            break;
+          }
+        }
+      }
+
+      if (!img || !img.complete || img.naturalWidth === 0) return;
+
+      const cw = canvas.width;
+      const ch = canvas.height;
+      const iw = img.naturalWidth;
+      const ih = img.naturalHeight;
+
+      // Crop slight bottom game subtitles (45px) for clean presentation
+      const cropBottom = 45;
+      const sourceW = iw;
+      const sourceH = Math.max(10, ih - cropBottom);
+
+      // Centered Aspect Cover Scaling
+      const scale = Math.max(cw / sourceW, ch / sourceH);
+      const renderW = sourceW * scale;
+      const renderH = sourceH * scale;
+      const offsetX = (cw - renderW) / 2;
+      const offsetY = (ch - renderH) / 2;
+
+      ctx.drawImage(img, 0, 0, sourceW, sourceH, offsetX, offsetY, renderW, renderH);
+      lastRenderedFrame = idx;
+    }
+
+    // RAF-throttled frame rendering to guarantee butter-smooth 60/120fps
+    function requestFrameRender() {
+      if (!isDrawing) {
+        isDrawing = true;
+        requestAnimationFrame(() => {
+          renderFrame(sequenceState.frame);
+          isDrawing = false;
+        });
+      }
+    }
+
+    // Window Resize Handler with Device Pixel Ratio
+    function resizeCanvas() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(window.innerWidth * dpr);
+      canvas.height = Math.round(window.innerHeight * dpr);
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
+      
+      // Force repaint
+      lastRenderedFrame = -1;
+      renderFrame(sequenceState.frame);
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+
+    // -------------------------------------------------------------
+    // Progressive Asset Preloader
+    // -------------------------------------------------------------
+    function preloadAssets() {
+      const circle = document.getElementById("loaderCircle");
+      const percentEl = document.getElementById("loaderPercent");
+      const bar = document.getElementById("loaderBar");
+      const statusEl = document.getElementById("loaderStatus");
+      
+      const circumference = 2 * Math.PI * 50;
+      let loadedCount = 0;
+
+      return new Promise((resolve) => {
+        // Prioritize loading frame 1 immediately
+        const firstImg = new Image();
+        firstImg.onload = () => {
+          images[0] = firstImg;
+          loadedCount++;
+          renderFrame(0);
+        };
+        firstImg.onerror = () => { loadedCount++; };
+        firstImg.src = formatImagePath(1);
+        images[0] = firstImg;
+
+        // Load remaining frames
+        for (let i = 2; i <= TOTAL_FRAMES; i++) {
+          const img = new Image();
+          const frameIdx = i - 1;
+
+          img.onload = () => {
+            loadedCount++;
+            images[frameIdx] = img;
+            
+            const pct = Math.round((loadedCount / TOTAL_FRAMES) * 100);
+            percentEl.textContent = `${pct}%`;
+            bar.style.width = `${pct}%`;
+            
+            const offset = circumference - (loadedCount / TOTAL_FRAMES) * circumference;
+            circle.style.strokeDashoffset = offset;
+            statusEl.textContent = `Buffering frames (${loadedCount}/${TOTAL_FRAMES})...`;
+
+            if (loadedCount === TOTAL_FRAMES) {
+              resolve();
+            }
+          };
+
+          img.onerror = () => {
+            loadedCount++;
+            if (loadedCount === TOTAL_FRAMES) resolve();
+          };
+
+          img.src = formatImagePath(i);
+        }
+
+        // Safety fallback timeout
+        setTimeout(() => {
+          if (loadedCount >= 10) resolve();
+        }, 4000);
+      });
+    }
+
+    // -------------------------------------------------------------
+    // GSAP ScrollTrigger Sequence Timeline Setup
+    // -------------------------------------------------------------
+    function initAnimationTimeline() {
+      // Main Scrubbing Timeline pinned to viewport
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: "#animation-section",
+          start: "top top",
+          end: "+=650%", // Pinned for full story trajectory
+          scrub: 0.6,    // Snappy, silky-smooth response (no sticky lag)
+          pin: true,
+          anticipatePin: 1
+        }
+      });
+
+      // Frame scrubbing animation
+      tl.to(sequenceState, {
+        frame: TOTAL_FRAMES - 1,
+        ease: "none",
+        duration: 24,
+        onUpdate: requestFrameRender
+      }, 0);
+
+      // Hero overlay fade out on initial scroll
+      tl.to("#hero-overlay", {
+        opacity: 0,
+        y: -70,
+        duration: 2.2,
+        ease: "power2.in",
+        autoAlpha: 0
+      }, 0);
+
+      // Story Card 1: The Builder Mindset (Early fall: frame ~25-65)
+      tl.fromTo("#story-card-1", 
+        { opacity: 0, y: 40, autoAlpha: 0 }, 
+        { opacity: 1, y: 0, autoAlpha: 1, duration: 1.8, ease: "power2.out" }, 
+        2.5
+      );
+      tl.to("#story-card-1", 
+        { opacity: 0, y: -30, autoAlpha: 0, duration: 1.5, ease: "power2.in" }, 
+        5.2
+      );
+
+      // Story Card 2: Polymath Curiosity (Mid fall: frame ~75-115)
+      tl.fromTo("#story-card-2", 
+        { opacity: 0, y: 40, autoAlpha: 0 }, 
+        { opacity: 1, y: 0, autoAlpha: 1, duration: 1.8, ease: "power2.out" }, 
+        6.2
+      );
+      tl.to("#story-card-2", 
+        { opacity: 0, y: -30, autoAlpha: 0, duration: 1.5, ease: "power2.in" }, 
+        9.0
+      );
+
+      // Story Card 3: Obsession with Craft (Freefall: frame ~125-165)
+      tl.fromTo("#story-card-3", 
+        { opacity: 0, y: 40, autoAlpha: 0 }, 
+        { opacity: 1, y: 0, autoAlpha: 1, duration: 1.8, ease: "power2.out" }, 
+        10.0
+      );
+      tl.to("#story-card-3", 
+        { opacity: 0, y: -30, autoAlpha: 0, duration: 1.5, ease: "power2.in" }, 
+        12.8
+      );
+
+      // Story Card 4: Empirical Iteration (Atmosphere: frame ~175-215)
+      tl.fromTo("#story-card-4", 
+        { opacity: 0, y: 40, autoAlpha: 0 }, 
+        { opacity: 1, y: 0, autoAlpha: 1, duration: 1.8, ease: "power2.out" }, 
+        13.8
+      );
+      tl.to("#story-card-4", 
+        { opacity: 0, y: -30, autoAlpha: 0, duration: 1.5, ease: "power2.in" }, 
+        16.6
+      );
+
+      // Story Card 5: Core Identity / Leap of Faith (Golden sunset apex: frame ~220-245)
+      tl.fromTo("#story-card-5", 
+        { opacity: 0, y: 40, autoAlpha: 0, scale: 0.96 }, 
+        { opacity: 1, y: 0, autoAlpha: 1, scale: 1, duration: 1.8, ease: "power2.out" }, 
+        17.4
+      );
+      tl.to("#story-card-5", 
+        { opacity: 0, y: -30, autoAlpha: 0, duration: 1.4, ease: "power2.in" }, 
+        20.0
+      );
+
+      // GRAND FINALE CARD: Revealed inside the final frames (Frame ~248-264)
+      tl.fromTo("#story-finale",
+        { opacity: 0, scale: 0.9, autoAlpha: 0 },
+        { opacity: 1, scale: 1, autoAlpha: 1, duration: 2.2, ease: "power3.out" },
+        20.8
+      );
+    }
+
+    // Scroll down to start diving
+    function scrollDownToDive() {
+      gsap.to(window, {
+        scrollTo: { y: window.innerHeight * 0.7 },
+        duration: 1.0,
+        ease: "power2.inOut"
+      });
+    }
+
+    // Replay sequence: smoothly scroll back to top
+    function replaySequence() {
+      gsap.to(window, {
+        scrollTo: { y: 0 },
+        duration: 1.8,
+        ease: "power3.inOut"
+      });
+    }
+
+    // -------------------------------------------------------------
+    // Micro-Interactions: Mouse Spotlight & Magnetic Buttons
+    // -------------------------------------------------------------
+    function setupInteractions() {
+      // Spotlight follow on narrative cards
+      document.querySelectorAll(".story-hud-card").forEach(card => {
+        card.addEventListener("mousemove", (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          card.style.setProperty("--mouse-x", `${x}px`);
+          card.style.setProperty("--mouse-y", `${y}px`);
+        });
+      });
+
+      // Magnetic hover spring physics on social links
+      document.querySelectorAll(".magnetic-wrap").forEach(wrap => {
+        const link = wrap.querySelector(".magnetic-link");
+        if (!link) return;
+        wrap.addEventListener("mousemove", (e) => {
+          const rect = wrap.getBoundingClientRect();
+          const relX = e.clientX - rect.left - rect.width / 2;
+          const relY = e.clientY - rect.top - rect.height / 2;
+          gsap.to(link, {
+            x: relX * 0.35,
+            y: relY * 0.35,
+            duration: 0.25,
+            ease: "power2.out"
+          });
+        });
+        wrap.addEventListener("mouseleave", () => {
+          gsap.to(link, {
+            x: 0,
+            y: 0,
+            duration: 0.5,
+            ease: "elastic.out(1, 0.4)"
+          });
+        });
+      });
+    }
+
+    // -------------------------------------------------------------
+    // Entry Point Execution
+    // -------------------------------------------------------------
+    window.addEventListener("DOMContentLoaded", () => {
+      resizeCanvas();
+
+      preloadAssets().then(() => {
+        const loader = document.getElementById("loader");
+        
+        gsap.to(loader, {
+          opacity: 0,
+          duration: 0.6,
+          ease: "power3.inOut",
+          onComplete: () => {
+            loader.style.display = "none";
+            document.body.classList.remove("loading");
+
+            // Hero Entrance Animation
+            gsap.from(".hero-badge-pill", { opacity: 0, y: -15, duration: 0.7, ease: "power2.out" });
+            gsap.from(".hero-primary-name", { opacity: 0, y: 15, duration: 0.9, ease: "power2.out", delay: 0.15 });
+            gsap.from(".hero-subtitle", { opacity: 0, y: 15, duration: 0.8, ease: "power2.out", delay: 0.3 });
+            gsap.from(".hero-actions", { opacity: 0, y: 15, duration: 0.8, ease: "power2.out", delay: 0.45 });
+
+            // Initialize Main Scroll Timeline
+            initAnimationTimeline();
+            setupInteractions();
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
